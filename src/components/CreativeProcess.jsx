@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import gsap from "gsap";
 
 export default function CreativeProcess() {
+  // === BACKGROUND IMAGES ===
   const backgrounds = [
     "https://assets.codepen.io/7558/flame-glow-blur-001.jpg",
     "https://assets.codepen.io/7558/flame-glow-blur-002.jpg",
@@ -15,6 +16,7 @@ export default function CreativeProcess() {
     "https://assets.codepen.io/7558/flame-glow-blur-010.jpg",
   ];
 
+  // === TEXT DATA ===
   const artists = [
     "Silence", "Meditation", "Intuition", "Authenticity", "Presence",
     "Listening", "Curiosity", "Patience", "Surrender", "Simplicity",
@@ -25,10 +27,46 @@ export default function CreativeProcess() {
     "Feeling", "Clarity", "Emptiness", "Awareness", "Minimalism",
   ];
 
+  const centerTexts = [
+    "Creative Elements", "Inner Stillness", "Deep Knowing", "True Expression",
+    "Now Moment", "Deep Attention", "Open Exploration", "Calm Waiting",
+    "Let Go Control", "Pure Essence",
+  ];
+
+  // === REACT STATES ===
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
-  // === Loader ===
+  // === SOUND SYSTEM ===
+  const sounds = {
+    hover: new Audio("https://assets.codepen.io/7558/click-reverb-001.mp3"),
+    click: new Audio("https://assets.codepen.io/7558/shutter-fx-001.mp3"),
+    whoosh: new Audio("https://assets.codepen.io/7558/whoosh-fx-001.mp3"),
+  };
+
+  // Volumes
+  sounds.hover.volume = 0.15;
+  sounds.click.volume = 0.3;
+  sounds.whoosh.volume = 0.3;
+
+  let audioEnabled = false;
+
+  const enableAudio = () => {
+    if (!audioEnabled) {
+      audioEnabled = true;
+      console.log("🔊 Audio enabled");
+    }
+  };
+
+  const playSound = (name, delay = 0) => {
+    if (!audioEnabled || !soundEnabled || !sounds[name]) return;
+    const sound = sounds[name];
+    sound.currentTime = 0;
+    setTimeout(() => sound.play().catch(() => {}), delay);
+  };
+
+  // === LOADER EFFECT ===
   useEffect(() => {
     let counter = 0;
     const loadingOverlay = document.getElementById("loading-overlay");
@@ -52,7 +90,10 @@ export default function CreativeProcess() {
           duration: 1.2,
           ease: "power3.inOut",
           delay: 0.3,
-          onComplete: () => setIsLoaded(true),
+          onComplete: () => {
+            setIsLoaded(true);
+            playSound("whoosh", 300);
+          },
         });
       }
 
@@ -62,9 +103,13 @@ export default function CreativeProcess() {
     return () => clearInterval(interval);
   }, []);
 
-  // === Image Transition ===
+  // === IMAGE TRANSITION ===
   const changeBackground = (index) => {
     if (index === activeIndex) return;
+
+    enableAudio();
+    playSound("click");
+    playSound("whoosh", 100);
 
     const currentBg = document.getElementById(`bg-${activeIndex}`);
     const nextBg = document.getElementById(`bg-${index}`);
@@ -76,7 +121,7 @@ export default function CreativeProcess() {
     });
 
     const tl = gsap.timeline({
-      defaults: { duration: 0.6, ease: "power3.inOut" },
+      defaults: { duration: 0.5, ease: "power3.inOut" },
       onComplete: () => {
         gsap.set(currentBg, { opacity: 0, zIndex: 0 });
         setActiveIndex(index);
@@ -84,7 +129,7 @@ export default function CreativeProcess() {
     });
 
     tl.to(nextBg, { clipPath: "inset(0% 0% 0% 0%)" });
-    tl.to(currentBg, { opacity: 0.3, duration: 0.4, ease: "power2.out" }, "-=0.4");
+    tl.to(currentBg, { opacity: 0.3, duration: 0.3, ease: "power2.out" }, "-=0.3");
   };
 
   return (
@@ -92,18 +137,18 @@ export default function CreativeProcess() {
       {/* === LOADING OVERLAY === */}
       <div
         id="loading-overlay"
-        className="fixed inset-0 flex items-center justify-center bg-white text-black text-3xl uppercase z-9999 font-bold tracking-tight"
+        className="fixed inset-0 flex flex-col items-center justify-center bg-white text-black text-3xl font-semibold uppercase z-9999"
       >
-        <div className="flex items-center justify-center animate-pulse">
+        <div className="flex items-center justify-center">
           <span>Loading</span>
-          <span id="loading-counter" className="ml-2 font-normal">[00]</span>
+          <span id="loading-counter" className="ml-2">[00]</span>
         </div>
       </div>
 
       {/* === MAIN SECTION === */}
       {isLoaded && (
         <div className="relative h-screen w-full overflow-hidden bg-black text-[rgba(245,245,245,0.9)] font-ppNeue">
-          {/* Background Images */}
+          {/* === BACKGROUNDS === */}
           {backgrounds.map((src, i) => (
             <img
               key={i}
@@ -116,71 +161,99 @@ export default function CreativeProcess() {
             />
           ))}
 
-          {/* Foreground Content */}
-          <div className="absolute inset-0 z-50 pointer-events-auto flex flex-col items-center justify-between text-center">
-            {/* Header */}
+          {/* === SOUND TOGGLE === */}
+          <div
+            className={`sound-toggle fixed top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ${
+              soundEnabled
+                ? "bg-white/10 border border-white/20 hover:bg-white/20"
+                : "bg-white/5 border border-white/10"
+            }`}
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            onMouseEnter={() => {
+              enableAudio();
+              playSound("hover");
+            }}
+          >
+            <div className="relative w-1 h-1">
+              {[1, 2, 3, 4].map((dot) => (
+                <div
+                  key={dot}
+                  className={`absolute top-1/2 left-1/2 w-1 h-1 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 ${
+                    soundEnabled
+                      ? "animate-ping opacity-100"
+                      : "opacity-30"
+                  }`}
+                  style={{ animationDelay: `${dot * 0.2}s` }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* === FOREGROUND CONTENT === */}
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-between text-center">
+            {/* HEADER */}
             <div className="text-[10vw] uppercase leading-[0.8] mt-4 select-none">
               <div>The Creative</div>
               <div>Process</div>
             </div>
 
-            {/* Center Content */}
+            {/* MIDDLE SECTION */}
             <div className="flex justify-between items-center w-full px-12 text-[rgba(245,245,245,0.9)]">
-              {/* Left Column */}
+              {/* LEFT COLUMN */}
               <div className="w-[35%] flex flex-col gap-1 text-left">
                 {artists.map((name, i) => (
                   <div
                     key={i}
                     onClick={() => changeBackground(i)}
-                    className={`cursor-pointer select-none transition-all duration-300 flex items-center ${
+                    onMouseEnter={() => {
+                      enableAudio();
+                      playSound("hover");
+                    }}
+                    className={`cursor-pointer flex items-center select-none transition-all duration-300 ${
                       i === activeIndex
-                        ? "opacity-100 translate-x-10px pl-3"
+                        ? "opacity-100 translate-x-2.5 pl-3"
                         : "opacity-40 hover:opacity-80"
                     }`}
                   >
-                    {/* Dot before text for active item */}
                     {i === activeIndex && (
-                      <span className="w-2 h-2 bg-white rounded-full mr-2 transition-all duration-300" />
+                      <span className="w-2 h-2 bg-white rounded-full mr-2"></span>
                     )}
-                    <span>{name}</span>
+                    {name}
                   </div>
                 ))}
               </div>
 
-              {/* Center Text */}
+              {/* CENTER TEXT */}
               <div className="w-[20%] text-center text-[1.5vw] select-none">
-                <h3 className="transition-all duration-500">
-                  {[
-                    "Creative Elements","Inner Stillness","Deep Knowing","True Expression",
-                    "Now Moment","Deep Attention","Open Exploration","Calm Waiting",
-                    "Let Go Control","Pure Essence",
-                  ][activeIndex]}
-                </h3>
+                <h3 className="transition-all duration-500">{centerTexts[activeIndex]}</h3>
               </div>
 
-              {/* Right Column */}
+              {/* RIGHT COLUMN */}
               <div className="w-[35%] flex flex-col gap-1 text-right">
                 {categories.map((name, i) => (
                   <div
                     key={i}
                     onClick={() => changeBackground(i)}
-                    className={`cursor-pointer select-none transition-all duration-300 flex items-center justify-end ${
+                    onMouseEnter={() => {
+                      enableAudio();
+                      playSound("hover");
+                    }}
+                    className={`cursor-pointer flex items-center justify-end select-none transition-all duration-300 ${
                       i === activeIndex
-                        ? "opacity-100 -translate-x-10px pr-3"
+                        ? "opacity-100 -translate-x-[10px] pr-3"
                         : "opacity-40 hover:opacity-80"
                     }`}
                   >
-                    <span>{name}</span>
-                    {/* Dot after text for active item */}
+                    {name}
                     {i === activeIndex && (
-                      <span className="w-2 h-2 bg-white rounded-full ml-2 transition-all duration-300" />
+                      <span className="w-2 h-2 bg-white rounded-full ml-2"></span>
                     )}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Footer */}
+            {/* FOOTER */}
             <div className="text-[10vw] uppercase leading-[0.8] mb-4 select-none">
               <div>Beyond</div>
               <div>Thinking</div>
