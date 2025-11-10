@@ -1,0 +1,10 @@
+/* ✅ 1️⃣ Import your font first */
+@import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
+
+/* ✅ 2️⃣ Then import Tailwind layers */
+@import "tailwindcss";
+
+/* ✅ 3️⃣ Then your custom CSS */
+html {
+  font-family: "PP Neue Montreal", sans-serif;
+}
