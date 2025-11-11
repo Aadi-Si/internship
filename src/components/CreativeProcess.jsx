@@ -192,7 +192,7 @@ export default function CreativeProcess() {
           {/* === FOREGROUND CONTENT === */}
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-between text-center">
             {/* HEADER */}
-            <div className="text-[10vw] uppercase leading-[0.8] mt-5 select-none font-medium">
+            <div className="text-[10vw] uppercase leading-[0.8] pt-8 select-none font-medium">
               <div>The Creative</div>
               <div>Process</div>
             </div>
@@ -254,7 +254,7 @@ export default function CreativeProcess() {
             </div>
 
             {/* FOOTER */}
-            <div className="text-[10vw] uppercase leading-[0.8] mb-4 translate-y-[-5vh] select-none font-medium">
+            <div className="text-[10vw] uppercase leading-[0.8] translate-y-[-8vh] select-none font-medium">
               <div>Beyond</div>
               <div>Thinking</div>
             </div>
