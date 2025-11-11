@@ -18,19 +18,19 @@ export default function CreativeProcess() {
 
   // === TEXT DATA ===
   const artists = [
-    "Silence", "Meditation", "Intuition", "Authenticity", "Presence",
-    "Listening", "Curiosity", "Patience", "Surrender", "Simplicity",
+    "SILENCE", "MEDITATION", "INTUTION", "AUTHENTICITY", "PRESENCE",
+    "LISTENING", "CURIOSITY", "PATIENCE", "SURRENDER", "SIMPLICITY",
   ];
 
   const categories = [
-    "Reduction", "Essence", "Space", "Resonance", "Truth",
-    "Feeling", "Clarity", "Emptiness", "Awareness", "Minimalism",
+    "REDUCTION", "ESSENCE", "SPACE", "RESONANCE", "TRUTH",
+    "FEELING", "CLARITY", "EMPTINESS", "AWARENESS", "MINIMALISM",
   ];
 
   const centerTexts = [
-    "Creative Elements", "Inner Stillness", "Deep Knowing", "True Expression",
-    "Now Moment", "Deep Attention", "Open Exploration", "Calm Waiting",
-    "Let Go Control", "Pure Essence",
+    "CREATIVE ELEMENTS", "INNER STILLNESS", "DEEP KNOWING", "TRUE EXPRESSION",
+    "NOW MOMENT", "DEEP ATTENTION", "OPEN EXPLORATION", "CALM WAITING",
+    "LET GO CONTROL", "PURE ESSENCE",
   ];
 
   // === REACT STATES ===
@@ -137,7 +137,7 @@ export default function CreativeProcess() {
       {/* === LOADING OVERLAY === */}
       <div
         id="loading-overlay"
-        className="fixed inset-0 flex flex-col items-center justify-center bg-white text-black text-3xl font-semibold uppercase z-9999"
+        className="fixed inset-0 flex flex-col items-center justify-center bg-white text-black text-3xl font-medium uppercase z-9999"
       >
         <div className="flex items-center justify-center">
           <span>Loading</span>
@@ -192,7 +192,7 @@ export default function CreativeProcess() {
           {/* === FOREGROUND CONTENT === */}
           <div className="absolute inset-0 z-50 flex flex-col items-center justify-between text-center">
             {/* HEADER */}
-            <div className="text-[10vw] uppercase leading-[0.8] mt-4 select-none">
+            <div className="text-[10vw] uppercase leading-[0.8] mt-5 select-none font-medium">
               <div>The Creative</div>
               <div>Process</div>
             </div>
@@ -209,7 +209,7 @@ export default function CreativeProcess() {
                       enableAudio();
                       playSound("hover");
                     }}
-                    className={`cursor-pointer flex items-center select-none transition-all duration-300 ${
+                    className={`cursor-pointer flex items-center select-none font-medium transition-all duration-300 ${
                       i === activeIndex
                         ? "opacity-100 translate-x-2.5 pl-3"
                         : "opacity-40 hover:opacity-80"
@@ -224,7 +224,7 @@ export default function CreativeProcess() {
               </div>
 
               {/* CENTER TEXT */}
-              <div className="w-[20%] text-center text-[1.5vw] select-none">
+              <div className="w-[20%] text-center text-[1.5vw] font-medium select-none">
                 <h3 className="transition-all duration-500">{centerTexts[activeIndex]}</h3>
               </div>
 
@@ -238,9 +238,9 @@ export default function CreativeProcess() {
                       enableAudio();
                       playSound("hover");
                     }}
-                    className={`cursor-pointer flex items-center justify-end select-none transition-all duration-300 ${
+                    className={`cursor-pointer flex items-center font-medium justify-end select-none transition-all duration-300 ${
                       i === activeIndex
-                        ? "opacity-100 -translate-x-[10px] pr-3"
+                        ? "opacity-100 -translate-x-2.5 pr-3"
                         : "opacity-40 hover:opacity-80"
                     }`}
                   >
@@ -254,7 +254,7 @@ export default function CreativeProcess() {
             </div>
 
             {/* FOOTER */}
-            <div className="text-[10vw] uppercase leading-[0.8] mb-4 select-none">
+            <div className="text-[10vw] uppercase leading-[0.8] mb-4 translate-y-[-5vh] select-none font-medium">
               <div>Beyond</div>
               <div>Thinking</div>
             </div>
