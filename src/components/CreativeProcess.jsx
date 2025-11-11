@@ -254,7 +254,7 @@ export default function CreativeProcess() {
             </div>
 
             {/* FOOTER */}
-            <div className="text-[10vw] uppercase leading-[0.8] translate-y-[-8vh] select-none font-medium">
+            <div className="text-[10vw] uppercase leading-[0.8] translate-y-[-5vh] select-none font-medium">
               <div>Beyond</div>
               <div>Thinking</div>
             </div>
